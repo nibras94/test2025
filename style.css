@@ -1,0 +1,165 @@
+/* ---------------------------------------------------- */
+/* 1. الإعدادات الأساسية والثيم (Soft Nebula Aesthetic) */
+/* ---------------------------------------------------- */
+
+/* تعريف متغيرات الألوان الأساسية */
+:root {
+    --color-background-primary: #1a254b; /* أزرق داكن جداً (قاعدة السديم) */
+    --color-background-secondary: #0d1736; /* أزرق داكن أفتح (للبطاقات) */
+    --color-background-hover: #1a2347; /* لون عند التحويم */
+    --color-border-dark: #513737; /* لون الإطارات والحدود الداكنة */
+    --color-text-primary: #ffffff; /* أبيض ناعم مائل للزرقة */
+    --color-accent-teal: #eef52e; /* أزرق قوي (Neon Blue) */
+    --color-accent-purple: #9333ea; /* بنفسجي هادئ */
+    --color-success: #34d058; /* أخضر للنجاح */
+    --color-warning: #ffb800; /* أصفر دافئ للخطر */
+
+    /* **إعادة تعريف متغيرات Bootstrap لـ Dark Theme** */
+    --bs-body-bg: var(--color-background-primary);
+    --bs-body-color: var(--color-text-primary);
+    --bs-link-color: var(--color-accent-teal);
+    --bs-link-hover-color: #fff;
+    --bs-card-bg: var(--color-background-secondary);
+    --bs-card-border-color: var(--color-border-dark);
+    --bs-table-bg: var(--color-background-secondary);
+    --bs-table-color: var(--color-text-primary);
+    --bs-table-border-color: #3d3037;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--color-background-primary);
+    color: var(--color-text-primary);
+    direction: rtl; 
+    scroll-behavior: smooth;
+    /* خلفية متدرجة خفيفة في الجسم لتحقيق الإحساس بالسديم */
+    background-image: radial-gradient(circle at top right, rgba(30, 144, 255, 0.1), transparent 50%),
+                      radial-gradient(circle at bottom left, rgba(147, 51, 234, 0.1), transparent 50%);
+    transition: background-color 0.5s ease;
+}
+
+/* ---------------------------------------------------- */
+/* 2. شريط التنقل (Minimal Glass) */
+/* ---------------------------------------------------- */
+
+.navbar { 
+    background-color: rgba(13, 23, 54, 0.7); /* شفافية داكنة */
+    border-bottom: 1px solid var(--color-border-dark);
+    backdrop-filter: blur(10px); /* ضبابية عالية للهدوء */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    transition: background-color 0.4s;
+}
+
+.nav-link { 
+    color: var(--color-text-primary); 
+    font-weight: 400;
+    transition: color 0.3s, border-bottom 0.3s; 
+}
+.nav-link:hover { 
+    color: var(--color-accent-teal); 
+    border-bottom: 2px solid var(--color-accent-teal);
+    text-shadow: 0 0 8px rgba(30, 144, 255, 0.6); /* تأثير النيون الناعم */
+}
+
+/* ---------------------------------------------------- */
+/* 3. الأقسام الرئيسية والبطاقات (Depth and Focus) */
+/* ---------------------------------------------------- */
+
+/* القسم الترويجي (Hero Section) - إطار التركيز */
+.hero-section {
+    background: var(--color-background-secondary); 
+    border-radius: 24px;
+    border: 1px solid rgba(30, 144, 255, 0.3); /* إطار أزرق ناعم */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5); /* ظل عميق */
+    text-shadow: 0 0 5px rgba(224, 231, 255, 0.1); 
+}
+
+/* الألوان للنصوص البارزة في Hero */
+.text-indigo-400 { color: var(--color-accent-teal); } 
+.text-indigo-300 { color: var(--color-text-primary); }
+
+/* بطاقة تسجيل الدخول (Modal Card) والبطاقات الأخرى */
+.login-card, .course-card { 
+    background-color: var(--color-background-secondary);
+    border-radius: 16px; 
+    border: 1px solid #30363d; 
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3), -5px -5px 15px rgba(60, 68, 88, 0.1); /* تأثير رفع ناعم */
+    transition: all 0.4s ease-in-out; 
+}
+
+/* بطاقات الدورات في وضع التفاعل */
+.course-card:hover {
+    background-color: var(--color-background-hover);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(30, 144, 255, 0.2); /* تأثير الانبهار */
+    border-color: var(--color-accent-teal);
+}
+
+/* ---------------------------------------------------- */
+/* 4. عناصر الإدخال والأزرار (Lush Green/Yellow Interactive) */
+/* ---------------------------------------------------- */
+
+/* حقل الإدخال */
+.input-field { 
+    background-color: var(--color-background-primary);
+    border: 1px solid #30363d; 
+    color: var(--color-text-primary);
+    border-radius: 8px;
+    transition: border-color 0.3s, box-shadow 0.3s; 
+}
+.input-field:focus { 
+    border-color: var(--color-accent-teal); 
+    box-shadow: 0 0 0 2px rgba(30, 144, 255, 0.4), inset 0 0 5px rgba(30, 144, 255, 0.2); 
+}
+
+/* **الزر الأساسي (Green-Yellow Gradient - للعمليات الإيجابية)** */
+.btn-primary { 
+    background: linear-gradient(90deg, var(--color-warning) 0%, var(--color-success) 100%); 
+    color: var(--color-background-primary) !important; 
+    font-weight: 700;
+    transition: all 0.3s ease-in-out; 
+    box-shadow: 0 4px 15px rgba(255, 184, 0, 0.5); 
+}
+.btn-primary:hover { 
+    background: linear-gradient(90deg, var(--color-success) 0%, var(--color-warning) 100%);
+    transform: translateY(-2px); 
+    box-shadow: 0 8px 25px rgba(52, 208, 88, 0.8); 
+}
+
+/* زر تسجيل الخروج (أحمر هادئ) */
+.bg-red-600 {
+    background-color: var(--color-accent-purple) !important; 
+    transition: all 0.3s;
+    box-shadow: 0 2px 8px rgba(147, 51, 234, 0.4);
+}
+.bg-red-600:hover {
+    background-color: #7e22ce !important;
+    transform: translateY(-1px);
+}
+
+/* ---------------------------------------------------- */
+/* 5. تنسيقات حالة الترخيص و عناصر Bootstrap المخصصة */
+/* ---------------------------------------------------- */
+.text-green-500 { color: var(--color-success); } 
+.text-red-400 { color: #ff7b72; }
+
+/* توحيد مظهر قائمة Bootstrap (خاص بملف course_page.html) */
+.list-group-item {
+    background-color: var(--bs-card-bg) !important; 
+    color: var(--bs-body-color) !important;
+    border-color: var(--bs-table-border-color) !important;
+    transition: background-color 0.2s;
+}
+.list-group-item:hover {
+    background-color: var(--color-background-hover) !important;
+}
+
+/* زر العودة المخصص */
+.btn-custom-return {
+    color: var(--color-accent-teal) !important;
+    font-weight: bold;
+}
+.btn-custom-return:hover {
+    color: var(--color-text-primary) !important;
+    text-decoration: underline;
+}

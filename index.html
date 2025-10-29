@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة الدورات الاحترافية - الرئيسية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    
+    <style>
+        /* إضافة تنسيق للنافذة المنبثقة (تأثير ضبابي للخلفية) */
+        .modal-overlay { background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); }
+    </style>
+</head>
+<body class="p-0">
+
+    <header class="navbar p-4 sticky top-0 z-20">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <h2 class="text-2xl font-bold text-indigo-400">منصة [اسم موقعك]</h2>
+            <nav class="space-x-6 space-x-reverse hidden md:flex">
+                <a href="#hero" class="nav-link py-2 px-3">الرئيسية</a>
+                <a href="#course-content" class="nav-link py-2 px-3">الدورات</a>
+                <a href="#about" class="nav-link py-2 px-3">من نحن</a>
+                <a href="#contact" class="nav-link py-2 px-3">اتصل بنا</a>
+            </nav>
+            <button id="open-login-modal-button" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
+                دخول المشتركين
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-4 md:p-8">
+
+        <section id="hero" class="hero-section min-h-[600px] flex items-center justify-center rounded-2xl p-12 mb-20 transition-all duration-700">
+            <div class="text-center space-y-6">
+                <h1 class="text-5xl md:text-6xl font-extrabold leading-tight text-white">
+                    تعلم المهارات المستقبلية <span class="text-indigo-300">بخطوات بسيطة</span>
+                </h1>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    منصتك التعليمية الرائدة لتعلم البرمجة، التصميم، وريادة الأعمال. انقر على "دخول المشتركين" للبدء.
+                </p>
+                <button id="open-modal-center-button" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition duration-200 shadow-xl hover:shadow-2xl">
+                    ابدأ رحلتك التعليمية الآن!
+                </button>
+            </div>
+        </section>
+
+        <section id="course-content" class="hidden"></section>
+
+        <section id="about" class="my-20 p-8">
+            <h2 class="text-4xl font-bold text-indigo-400 mb-8 text-center">لماذا تختار منصتنا؟</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="p-6 course-card">
+                    <h3 class="text-xl font-semibold text-white mb-2">محتوى عالي الجودة</h3>
+                    <p class="text-gray-400">دورات مصممة بواسطة خبراء لتناسب متطلبات سوق العمل.</p>
+                </div>
+                <div class="p-6 course-card">
+                    <h3 class="text-xl font-semibold text-white mb-2">وصول فوري</h3>
+                    <p class="text-gray-400">وصول سريع وفوري لجميع محتويات الدورات بضغطة زر.</p>
+                </div>
+                <div class="p-6 course-card">
+                    <h3 class="text-xl font-semibold text-white mb-2">دعم فني مستمر</h3>
+                    <p class="text-gray-400">فريق دعم مستعد للإجابة على جميع استفساراتك.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="my-20 p-8 border-t border-gray-700 pt-10">
+            <h2 class="text-4xl font-bold text-indigo-400 mb-8 text-center">تواصل معنا</h2>
+            <div class="text-center text-lg space-y-3 text-gray-300">
+                <p>البريد الإلكتروني: <a href="mailto:info@yourdomain.com" class="text-indigo-400 hover:underline">info@yourdomain.com</a></p>
+                <p>رقم الهاتف: <span class="text-indigo-400">+964 770 XXX XXXX</span></p>
+            </div>
+        </section>
+        
+    </main>
+
+    <footer class="bg-[#2b304f] p-6 text-center text-gray-500 border-t border-gray-700">
+        &copy; 2025 منصة الدورات الاحترافية. جميع الحقوق محفوظة.
+    </footer>
+
+
+    <div id="login-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay">
+        <div id="login-container" class="login-card p-10 md:p-12 w-full max-w-md mx-auto relative transform transition-all duration-300 scale-100 opacity-100">
+            
+            <button id="close-modal-button" class="absolute top-4 left-4 text-gray-400 hover:text-white transition duration-200" title="إغلاق">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <h2 class="text-3xl font-extrabold mb-8 text-white text-center">دخول المشتركين</h2>
+            <form id="license-form" class="space-y-6">
+                
+                <input type="text" id="licenseCodeInput" placeholder="أدخل كود الترخيص..." required 
+                       class="input-field w-full p-4 rounded-xl border text-lg text-right focus:outline-none">
+                
+                <button id="verify-button" type="submit" 
+                        class="btn-primary w-full text-white font-bold py-4 rounded-xl text-xl shadow-lg focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50">
+                    تسجيل الدخول والتحقق
+                </button>
+                
+                <p id="message" class="text-sm pt-2 font-medium text-center" style="min-height: 1.5rem;"></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

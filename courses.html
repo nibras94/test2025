@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أقسام الامتحانات | [اسم موقعك]</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+
+    <script src="script.js"></script>
+
+    <style>
+        /* تنسيق خاص لتأمين الأقسام المغلقة */
+        .course-card.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+            filter: grayscale(80%);
+            pointer-events: none; /* لمنع النقر */
+        }
+        /* تحسين شكل البطاقة لتبدو كزر بسيط */
+        .course-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 150px; /* زيادة حجم البطاقة */
+            background-color: #1f2937; /* خلفية البطاقة */
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .course-card:hover:not(.locked) {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+        }
+        .status-text {
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body class="p-0">
+
+    <header class="navbar p-4 sticky top-0 z-20">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <h2 class="text-2xl font-bold text-indigo-400">أقسام ألمراحل الدراسية</h2>
+            <nav class="space-x-6 space-x-reverse hidden md:flex">
+                <a href="#" class="nav-link py-2 px-3 border-b-2 border-indigo-400">الأقسام</a>
+            </nav>
+            <div class="flex items-center space-x-4 space-x-reverse">
+                
+                <span id="license-code-display" class="text-sm font-medium text-gray-300 whitespace-nowrap">
+                    </span>
+                
+                <a href="profile.html" title="ملفي الشخصي" class="p-2 rounded-full bg-indigo-600 hover:bg-indigo-700 transition duration-200">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                </a>
+                
+                <button id="nav-login-button" onclick="logout()" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
+                    خروج
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-4 md:p-8 min-h-screen">
+        <section id="courses-list" class="my-10">
+            <h1 class="text-4xl font-extrabold text-white mb-6">اختر المرحلة الدراسية:</h1>
+            <p class="text-gray-400 text-lg mb-10">
+               
+            </p>
+
+            <div id="courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <a href="course_page.html?course_id=primary6" class="course-card p-6 cursor-pointer" data-course-id="primary6">
+                    <h3 class="text-3xl font-extrabold text-indigo-400 mb-2">السادس الابتدائي</h3>
+                    <span class="status-text font-semibold"></span>
+                </a>
+                
+                <a href="course_page.html?course_id=middle3" class="course-card p-6 cursor-pointer" data-course-id="middle3">
+                    <h3 class="text-3xl font-extrabold text-indigo-400 mb-2">الثالث المتوسط</h3>
+                    <span class="status-text font-semibold"></span>
+                </a>
+
+                <a href="course_page.html?course_id=prep6_sci" class="course-card p-6 cursor-pointer" data-course-id="prep6_sci">
+                    <h3 class="text-3xl font-extrabold text-indigo-400 mb-2">السادس الإعدادي (علمي)</h3>
+                    <span class="status-text font-semibold"></span>
+                </a>
+                
+                 <a href="course_page.html?course_id=prep6_lit" class="course-card p-6 cursor-pointer" data-course-id="prep6_lit">
+                    <h3 class="text-3xl font-extrabold text-indigo-400 mb-2">السادس الإعدادي (أدبي)</h3>
+                    <span class="status-text font-semibold"></span>
+                </a>
+
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-[#0d1736] p-6 text-center text-gray-500 border-t border-gray-700 mt-10">
+        &copy; 2025 منصة الامتحانات الخارجية. جميع الحقوق محفوظة.
+    </footer>
+
+    <script>
+        // دالة عرض حالة الدورات بناءً على allowed_courses المخزنة محليًا
+        // تم تعريفها في window لجعلها قابلة للاستدعاء من script.js بعد التحقق الدوري
+        window.renderCourseStates = function() {
+            const allowedCoursesJson = localStorage.getItem('allowed_courses');
+            let allowedCourses = [];
+            try {
+                allowedCourses = JSON.parse(allowedCoursesJson) || [];
+            } catch (e) {
+                allowedCourses = [];
+            }
+            
+            // إضافة دعم للبيانات القديمة التي قد تكون تحتوي على 'prep6'
+            if (allowedCourses.includes('prep6')) {
+                allowedCourses.push('prep6_sci', 'prep6_lit');
+            }
+
+
+            const courseElements = document.querySelectorAll('.course-card');
+
+            courseElements.forEach(courseElement => {
+                const courseId = courseElement.dataset.courseId;
+                const statusTextElement = courseElement.querySelector('.status-text');
+
+                const isAllowed = allowedCourses.includes(courseId);
+
+                if (courseId && statusTextElement) {
+                    if (isAllowed) {
+                        statusTextElement.textContent = 'مفعَّل ✅';
+                        statusTextElement.style.color = '#34d058'; // أخضر
+                        courseElement.classList.remove('locked');
+                        courseElement.style.pointerEvents = 'auto'; 
+                        
+                    } else {
+                        statusTextElement.textContent = 'مغلق 🔒';
+                        statusTextElement.style.color = '#ff7b72'; // أحمر
+                        courseElement.classList.add('locked');
+                        courseElement.style.pointerEvents = 'none'; // منع النقر
+                    }
+                }
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', window.renderCourseStates);
+    </script>
+</body>
+</html>
